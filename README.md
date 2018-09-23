@@ -18,4 +18,4 @@ Launch locally, and either utilize the postman collection found in the repo or n
 Uses a singleton via DI for the caching of the data, so each restart of the application will require users to be re-created.  Uses a non .netCore nuget package for JWT creation, so if that causes any difficulty, please refer to the
 serverless Backend repository found here.https://github.com/Botna/ServerlessBankServer
 
-I did a controller and a provider level set of unit tests to show the different concepts for those, most importantly mocking.
+I did a controller and a provider level set of unit tests to show the different concepts for those, most importantly mocking.  THese are not terribly thorough, and just the basic understanding of them

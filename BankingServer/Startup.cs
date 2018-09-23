@@ -61,7 +61,7 @@ builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
+            app.UseSwagger();
             app.UseMvc();
 
         }

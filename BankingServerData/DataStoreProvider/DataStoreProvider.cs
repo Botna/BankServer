@@ -4,10 +4,13 @@ using System.Text;
 using BankingServerData.Models;
 using System.Linq;
 namespace BankingServerData.DataStoreProvider
-{ 
+{
     public class DataStoreProvider : IDataStoreProvider
     {
         List<DataStore> myCachedData = new List<DataStore>();
+
+
+
         private IJWTHelper myJWTHelper;
         public DataStoreProvider(IJWTHelper _myJWTHelper)
         {
@@ -35,7 +38,7 @@ namespace BankingServerData.DataStoreProvider
         public string attemptLogin(string userName, string password)
         {
             var existingData = myCachedData.Find(x => x.accountInformation.userName == userName);
-            if(existingData == null)
+            if (existingData == null)
             {
                 return null;
             }
@@ -43,7 +46,7 @@ namespace BankingServerData.DataStoreProvider
             if (existingData.accountInformation.userName == userName && existingData.accountInformation.password == password)
             {
                 //this is bad, shoudl be comparing it to a salt!
-                if(existingData.currentToken != null)
+                if (existingData.currentToken != null)
                 {
                     token = existingData.currentToken;
                 }
@@ -71,7 +74,7 @@ namespace BankingServerData.DataStoreProvider
         {
             var existingData = getRecordFromToken(token);
 
-            if(existingData == null || existingData.currentToken != token)
+            if (existingData == null || existingData.currentToken != token)
             {
                 return false;
             }
@@ -88,12 +91,12 @@ namespace BankingServerData.DataStoreProvider
             return existingData.currentBalance;
         }
 
-        
+
 
         public bool processWithdrawl(string token, decimal amount)
         {
             var existingData = getRecordFromToken(token);
-            if(amount > existingData.currentBalance)
+            if (amount > existingData.currentBalance)
             {
                 return false;
             }
@@ -106,7 +109,7 @@ namespace BankingServerData.DataStoreProvider
         public bool processDeposit(string token, decimal amount)
         {
             var existingData = getRecordFromToken(token);
-            
+
             existingData.transactionHistory.Add(new TransactionHistory(DateTime.UtcNow, "Deposit", amount, existingData.currentBalance));
             existingData.currentBalance = existingData.currentBalance + amount;
             return true;
@@ -115,7 +118,7 @@ namespace BankingServerData.DataStoreProvider
         public List<TransactionHistory> getTransactionhistory(string token)
         {
             var existingData = getRecordFromToken(token);
-            return existingData.transactionHistory.OrderByDescending(x=> x.timeOfTransaction).ToList();
+            return existingData.transactionHistory.OrderByDescending(x => x.timeOfTransaction).ToList();
         }
 
         #region helpers
@@ -133,7 +136,14 @@ namespace BankingServerData.DataStoreProvider
             return myCachedData.Find(x => x.accountInformation.userName == userName);
         }
 
-  
+        public List<DataStore> getCachedData()
+        {
+            return myCachedData;
+        }
+        public void setCachedData(List<DataStore> newData)
+        {
+            myCachedData = newData;
+        }
         #endregion
     }
 }

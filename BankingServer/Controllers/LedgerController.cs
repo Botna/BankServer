@@ -39,9 +39,9 @@ namespace BankingServer.Controllers
         [HttpPost]
         public IActionResult Withdrawl(string authToken, [FromBody] Decimal amount)
         {
-            if (amount < 0)
+            if (amount <= 0)
             {
-                return BadRequest("Cant withdraw negative money via this endpoint (use deposit)");
+                return BadRequest("Invaliad withdrawl amount");
             }
             if (userAccountProvider.isLoggedIn(authToken))
             {
@@ -63,9 +63,9 @@ namespace BankingServer.Controllers
         [Route("Deposit")]
         [HttpPost]
         public IActionResult Deposit(string authToken, [FromBody] Decimal amount)
-        {   if(amount < 0)
+        {   if(amount <= 0)
             {
-                return BadRequest("Cant deposit negative money via this endpoint (use withdrawl)");
+                return BadRequest("Invalid deposit amount");
             }
             if (userAccountProvider.isLoggedIn(authToken))
             {

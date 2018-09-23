@@ -43,13 +43,11 @@ namespace BankingServerData.DataStoreProvider
             if (existingData.accountInformation.userName == userName && existingData.accountInformation.password == password)
             {
                 //this is bad, shoudl be comparing it to a salt!
-                Dictionary<string, string> payload = new Dictionary<string, string>();
-                payload["userName"] = userName;
                 if(existingData.currentToken != null)
                 {
                     token = existingData.currentToken;
                 }
-                token = myJWTHelper.buildToken(payload);
+                token = myJWTHelper.buildToken(userName);
                 existingData.currentToken = token;
                 setData(existingData);
             }
@@ -126,7 +124,7 @@ namespace BankingServerData.DataStoreProvider
             string userName;
             try
             {
-                userName = myJWTHelper.decodeToken(token)["userName"];
+                userName = myJWTHelper.decodeToken(token);
             }
             catch
             {

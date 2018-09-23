@@ -25,9 +25,9 @@ namespace BankingServer.Controllers
         [HttpPost]
         public IActionResult CreateAccount([FromBody] UserAccount myAccount)
         {
-            if(myAccount == null)
+            if(myAccount == null || string.IsNullOrEmpty(myAccount.password) || string.IsNullOrEmpty(myAccount.userName))
             {
-                return BadRequest(null);
+                return BadRequest("Invalid Username/Password");
             }
             var createdSuccessfully = userAccountProvider.createAccount(myAccount.userName, myAccount.password);
             Response.Headers["Access-Control-Allow-Origin"].Append("*");
@@ -44,9 +44,9 @@ namespace BankingServer.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] UserAccount myAccount)
         {
-            if (myAccount == null)
+            if (myAccount == null || string.IsNullOrEmpty(myAccount.password) || string.IsNullOrEmpty(myAccount.userName))
             {
-                return BadRequest(null);
+                return BadRequest("Invalid Username/Password");
             }
             var token = userAccountProvider.login(myAccount.userName, myAccount.password);
             if(token != null)

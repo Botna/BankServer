@@ -6,8 +6,8 @@ namespace BankingServerData
 {
     public interface IJWTHelper
     {
-        string buildToken(Dictionary<string, string> myMap);
+        string buildToken(string userName);
 
-        Dictionary<string, string> decodeToken(string myToken);
+        string decodeToken(string myToken);
     }
 }
